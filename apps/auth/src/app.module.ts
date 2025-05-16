@@ -7,7 +7,9 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     UserModule,
     AuthModule,
-    MongooseModule.forRoot(process.env.MONGO_URI || 'mongodb://localhost:27017/auth'),
+    MongooseModule.forRoot(
+      process.env.MONGO_URI || 'mongodb://localhost:27017/auth',
+    ),
   ],
 })
 export class AppModule {}

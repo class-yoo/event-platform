@@ -19,6 +19,14 @@ export class UserRepository {
   }
 
   async findById(id: string): Promise<UserDocument | null> {
-    return this.userModel.findById(id);
+    return this.userModel.findOne({ _id: id, isDeleted: false });
+  }
+
+  async findAll(): Promise<UserDocument[]> {
+    return this.userModel.find({ isDeleted: false }, { password: 0, __v: 0 });
+  }
+
+  async softDelete(id: string): Promise<void> {
+    await this.userModel.updateOne({ _id: id }, { isDeleted: true });
   }
 }
