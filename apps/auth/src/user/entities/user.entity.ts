@@ -12,7 +12,7 @@ export class User {
   @Prop()
   password: string;
 
-  @Prop({ default: 'USER' })
+  @Prop({ default: UserRole.USER })
   role: UserRole;
 
   @Prop({ default: false })

@@ -47,3 +47,35 @@ curl -X PATCH http://localhost:3001/auth/users/6826f3ae397f15fc0c6c63b2/role \
   -H "Content-Type: application/json" \
   -d '{"role": "OPERATOR"}'
 ```
+
+
+
+이벤트 등록
+
+
+```shell
+curl -X POST http://localhost:3001/events \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -d '{
+    "title": "출석 3일 이벤트",
+    "description": "3일 연속 로그인 시 1,000포인트 지급",
+    "type": 1,
+    "target": 3,
+    "startAt": "2024-06-01T00:00:00.000Z",
+    "endAt": "2024-06-07T23:59:59.000Z"
+  }'
+```
+
+이벤트 목록 조회
+```shell
+curl -X GET http://localhost:3001/events \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ODI2ZjNhZTM5N2YxNWZjMGM2YzYzYjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc0NzU3MjgyOSwiZXhwIjoxNzQ3NTc2NDI5fQ.UNt28APbLcghTOtzUplEYe9UdoTnzgx0cPRkvdzplhI"
+```
+
+이벤트 단건조회
+```shell
+curl -X GET http://localhost:3001/events/<eventId> \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ODI2ZjNhZTM5N2YxNWZjMGM2YzYzYjIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc0NzU3MjgyOSwiZXhwIjoxNzQ3NTc2NDI5fQ.UNt28APbLcghTOtzUplEYe9UdoTnzgx0cPRkvdzplhI"
+
+```

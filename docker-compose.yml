@@ -21,7 +21,21 @@ services:
       - '3000:3000'
     environment:
       - MONGO_URI=mongodb://root:example@mongo:27017/auth?authSource=admin
-      - JWT_SECRET=supersecret
+      - NODE_ENV=dev
+    env_file:
+      - ./config/.env.dev
+    depends_on:
+      - mongo
+
+  event:
+    build:
+      context: .
+      dockerfile: apps/event/Dockerfile
+    container_name: event
+    ports:
+      - '3002:3000'
+    environment:
+      - MONGO_URI=mongodb://root:example@mongo:27017/auth?authSource=admin
       - NODE_ENV=dev
     env_file:
       - ./config/.env.dev
@@ -41,5 +55,6 @@ services:
       - ./config/.env.dev
     depends_on:
       - auth
+      - event
 volumes:
   mongo-data:
