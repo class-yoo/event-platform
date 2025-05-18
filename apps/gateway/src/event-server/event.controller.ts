@@ -29,7 +29,7 @@ export class EventController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post()
   @Roles(UserRole.ADMIN, UserRole.OPERATOR)
-  async create(
+  async createEvent(
     @Body() dto: any,
     @Req() req: { user: { userId: string } },
   ): Promise<any> {
@@ -47,7 +47,7 @@ export class EventController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   @Roles(UserRole.ADMIN, UserRole.OPERATOR)
-  async findAll(): Promise<any> {
+  async findAllEvent(): Promise<any> {
     const response = await firstValueFrom(
       this.httpService.get(`${this.eventUrl}/events`),
     );
@@ -57,9 +57,52 @@ export class EventController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get(':id')
   @Roles(UserRole.ADMIN, UserRole.OPERATOR)
-  async findOne(@Param('id') id: string): Promise<any> {
+  async findOneEvent(@Param('id') id: string): Promise<any> {
     const response = await firstValueFrom(
       this.httpService.get(`${this.eventUrl}/events/${id}`),
+    );
+    return response.data;
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post(':eventId/rewards')
+  @Roles(UserRole.ADMIN, UserRole.OPERATOR)
+  async createReward(
+    @Param('eventId') eventId: string,
+    @Body() dto: any,
+    @Req() req: { user: { userId: string } },
+  ): Promise<any> {
+    const userId = req.user?.userId;
+    const response = await firstValueFrom(
+      this.httpService.post(`${this.eventUrl}/events/${eventId}/rewards`, dto, {
+        headers: { 'x-user-id': userId },
+      }),
+    );
+
+    return response.data;
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get(':eventId/rewards')
+  @Roles(UserRole.ADMIN)
+  async findAllReward(@Param('eventId') eventId: string): Promise<any> {
+    const response = await firstValueFrom(
+      this.httpService.get(`${this.eventUrl}/events/${eventId}/rewards`),
+    );
+    return response.data;
+  }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get(':eventId/rewards/:rewardId')
+  @Roles(UserRole.ADMIN)
+  async findOneReward(
+    @Param('eventId') eventId: string,
+    @Param('rewardId') rewardId: string,
+  ): Promise<any> {
+    const response = await firstValueFrom(
+      this.httpService.get(
+        `${this.eventUrl}/events/${eventId}/rewards/${rewardId}`,
+      ),
     );
     return response.data;
   }

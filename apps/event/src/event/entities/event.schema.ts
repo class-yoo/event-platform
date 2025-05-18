@@ -11,11 +11,11 @@ export class Event extends Document {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ required: true, type: Number, enum: EventType })
+  @Prop({ required: true, enum: EventType })
   type: EventType;
 
   @Prop({ required: true })
-  target: number;
+  threshold: number;
 
   @Prop({ required: true })
   startAt: Date;

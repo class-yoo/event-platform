@@ -19,7 +19,7 @@ export class EventMongoRepository implements EventRepository {
       title: doc.title,
       description: doc.description,
       type: doc.type,
-      target: doc.target,
+      threshold: doc.threshold,
       startAt: doc.startAt,
       endAt: doc.endAt,
       active: doc.active,

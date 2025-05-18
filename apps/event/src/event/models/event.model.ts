@@ -5,7 +5,7 @@ export interface EventModel {
   title: string;
   description: string;
   type: EventType;
-  target: number;
+  threshold: number;
   startAt: Date;
   endAt: Date;
   active: boolean;

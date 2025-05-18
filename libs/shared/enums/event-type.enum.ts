@@ -1,4 +1,4 @@
 export enum EventType {
-  LOGIN_DAYS = 1,
-  INVITE_FRIENDS = 2,
+  LOGIN_DAYS = 'LOGIN_DAYS',
+  INVITE_FRIENDS = 'INVITE_FRIENDS',
 }

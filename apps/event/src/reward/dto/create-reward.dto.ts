@@ -1,0 +1,8 @@
+import { RewardType } from '@shared/enums/reward-type.enum';
+
+export class CreateRewardDto {
+  eventId: string; // 보상이 연결될 이벤트 ID
+  type: RewardType;
+  name: string; // 보상 이름
+  amount: number; // 수량
+}
