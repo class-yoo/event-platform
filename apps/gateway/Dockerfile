@@ -8,8 +8,8 @@ COPY . .
 
 RUN pnpm install --frozen-lockfile
 
-RUN pnpm --filter auth build
+RUN pnpm --filter gateway build
 
 EXPOSE 3000
 
-CMD ["node", "dist/apps/auth/src/main"]
+CMD ["node", "dist/apps/gateway/src/main"]

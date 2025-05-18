@@ -1,9 +1,4 @@
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-  OPERATOR = 'OPERATOR',
-  AUDITOR = 'AUDITOR',
-}
+import { UserRole } from '@shared/enums/user-role.enum';
 
 export class UserModel {
   constructor(

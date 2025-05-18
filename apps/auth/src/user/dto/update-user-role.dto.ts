@@ -1,5 +1,5 @@
 import { IsEnum } from 'class-validator';
-import { UserRole } from '../models/user.model';
+import { UserRole } from '@shared/enums/user-role.enum';
 
 export class UpdateUserRoleDto {
   @IsEnum(UserRole)

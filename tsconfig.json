@@ -18,23 +18,8 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/auth-utils": [
-        "libs/auth-utils/src"
-      ],
-      "@app/auth-utils/*": [
-        "libs/auth-utils/src/*"
-      ],
-      "@app/constants": [
-        "libs/constants/src"
-      ],
-      "@app/constants/*": [
-        "libs/constants/src/*"
-      ],
-      "@app/dto": [
-        "libs/dto/src"
-      ],
-      "@app/dto/*": [
-        "libs/dto/src/*"
+      "@shared/*": [
+        "libs/shared/*"
       ]
     }
   }
