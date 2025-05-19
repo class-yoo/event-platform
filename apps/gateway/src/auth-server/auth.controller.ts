@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   Patch,
-  UseGuards,
+  UseGuards, UseInterceptors,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
@@ -14,6 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../guards/roles.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { UserRole } from '@shared/enums/user-role.enum';
+import { HttpProxyErrorInterceptor } from '../interceptors/http-proxy-error.interceptor';
 
 @Controller('auth')
 export class AuthController {
@@ -26,6 +27,7 @@ export class AuthController {
     this.authUrl = configService.get<string>('AUTH_SERVICE_URL')!;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @Post('signup')
   async signup(@Body() body: any): Promise<any> {
     const response = await firstValueFrom(
@@ -34,6 +36,7 @@ export class AuthController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @Post('login')
   async login(@Body() body: any): Promise<any> {
     const response = await firstValueFrom(
@@ -42,6 +45,7 @@ export class AuthController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @Post('users')
   async create(@Body() body: any): Promise<any> {
     const response = await firstValueFrom(
@@ -50,6 +54,7 @@ export class AuthController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('users/:id')
   @Roles(UserRole.ADMIN)
@@ -60,6 +65,7 @@ export class AuthController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Patch('users/:id/role')
   @Roles(UserRole.ADMIN)

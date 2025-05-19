@@ -3,7 +3,7 @@ import {
   Get,
   Req,
   UseGuards,
-  Query,
+  Query, UseInterceptors,
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
@@ -12,6 +12,7 @@ import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../guards/roles.guard';
 import { UserRole } from '@shared/enums/user-role.enum';
+import { HttpProxyErrorInterceptor } from '../interceptors/http-proxy-error.interceptor';
 
 @Controller('reward-claims')
 export class RewardClaimsController {
@@ -24,6 +25,7 @@ export class RewardClaimsController {
     this.eventUrl = configService.get<string>('EVENT_SERVICE_URL')!;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('me')
   @Roles(UserRole.USER)
@@ -38,6 +40,7 @@ export class RewardClaimsController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   @Roles(UserRole.ADMIN, UserRole.OPERATOR, UserRole.AUDITOR)

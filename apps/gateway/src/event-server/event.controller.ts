@@ -5,8 +5,7 @@ import {
   Param,
   Body,
   Req,
-  UseGuards,
-  Query,
+  UseGuards, UseInterceptors,
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
@@ -15,6 +14,7 @@ import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../guards/roles.guard';
 import { UserRole } from '@shared/enums/user-role.enum';
+import { HttpProxyErrorInterceptor } from '../interceptors/http-proxy-error.interceptor';
 
 @Controller('events')
 export class EventController {
@@ -27,6 +27,7 @@ export class EventController {
     this.eventUrl = configService.get<string>('EVENT_SERVICE_URL')!;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post()
   @Roles(UserRole.ADMIN, UserRole.OPERATOR)
@@ -45,6 +46,7 @@ export class EventController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get()
   @Roles(UserRole.ADMIN, UserRole.OPERATOR)
@@ -55,6 +57,7 @@ export class EventController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get(':id')
   @Roles(UserRole.ADMIN, UserRole.OPERATOR)
@@ -65,6 +68,7 @@ export class EventController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post(':eventId/rewards')
   @Roles(UserRole.ADMIN, UserRole.OPERATOR)
@@ -83,6 +87,7 @@ export class EventController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get(':eventId/rewards')
   @Roles(UserRole.ADMIN)
@@ -93,6 +98,7 @@ export class EventController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get(':eventId/rewards/:rewardId')
   @Roles(UserRole.ADMIN)
@@ -108,6 +114,7 @@ export class EventController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post(':eventId/rewards/:rewardId/claim')
   @Roles(UserRole.USER, UserRole.ADMIN, UserRole.OPERATOR)
@@ -129,6 +136,7 @@ export class EventController {
     return response.data;
   }
 
+  @UseInterceptors(HttpProxyErrorInterceptor)
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('claims')
   @Roles(UserRole.USER)
