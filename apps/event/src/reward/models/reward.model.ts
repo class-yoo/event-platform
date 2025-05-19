@@ -8,6 +8,4 @@ export class RewardModel {
   amount: number;
   active: boolean;
   createdBy: string;
-  createdAt: Date;
-  updatedAt: Date;
 }

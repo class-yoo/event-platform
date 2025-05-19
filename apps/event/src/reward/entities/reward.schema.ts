@@ -13,7 +13,7 @@ export class Reward extends Document {
   @Prop({ required: true })
   name: string; // 보상명
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   amount: number; // 보상 수량
 
   @Prop({ required: true })
@@ -21,12 +21,6 @@ export class Reward extends Document {
 
   @Prop({ default: true })
   active: boolean;
-
-  @Prop()
-  createdAt: Date;
-
-  @Prop()
-  updatedAt: Date;
 }
 
 export type RewardDocument = Reward &

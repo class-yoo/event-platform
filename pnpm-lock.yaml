@@ -38,6 +38,9 @@ importers:
       class-validator:
         specifier: ^0.14.2
         version: 0.14.2
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       mongoose:
         specifier: ^8.14.3
         version: 8.14.3
@@ -137,6 +140,8 @@ importers:
         version: 8.32.1(eslint@9.26.0)(typescript@5.8.3)
 
   apps/auth: {}
+
+  apps/event: {}
 
   apps/gateway: {}
 
@@ -3095,6 +3100,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+    dev: false
 
   /debug@4.4.1:
     resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}

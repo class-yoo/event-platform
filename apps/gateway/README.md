@@ -1,4 +1,4 @@
-
+# Gateway server
 
 
 우선은 controller/ service 등으로 layer를 구분하는게 좋긴하지만 우선은 작업 특성상 개발 속도를 위해 gateway의 코드는 layer 구분없이 conroller에서 바로 auth/event 서버를 호출하도록 설정했습니다.

@@ -6,6 +6,4 @@ export class RewardResponseDto {
   amount: number;
   active: boolean;
   createdBy: string;
-  createdAt: Date;
-  updatedAt: Date;
 }

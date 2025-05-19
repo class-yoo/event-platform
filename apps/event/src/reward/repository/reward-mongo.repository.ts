@@ -22,8 +22,6 @@ export class RewardMongoRepository implements RewardRepository {
       amount: doc.amount,
       active: doc.active,
       createdBy: doc.createdBy,
-      createdAt: doc.createdAt,
-      updatedAt: doc.updatedAt,
     };
   }
 

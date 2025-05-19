@@ -4,10 +4,15 @@ import { RewardService } from './reward.service';
 import { CreateRewardDto } from './dto/create-reward.dto';
 import { RewardResponseDto } from './dto/reward-response.dto';
 import { RewardModel } from './models/reward.model';
+import { ClaimRewardResponseDto } from './dto/claim-reward-response.dto';
+import { RewardClaimService } from './reward-claim.service';
 
 @Controller('events/:eventId/rewards')
 export class RewardController {
-  constructor(private readonly rewardService: RewardService) {}
+  constructor(
+    private readonly rewardService: RewardService,
+    private readonly rewardClaimService: RewardClaimService,
+  ) {}
 
   // 보상 등록: POST /events/:eventId/rewards
   @Post()
@@ -18,7 +23,7 @@ export class RewardController {
   ): Promise<RewardResponseDto> {
     const userId = req.headers['x-user-id'] as string;
     const model = await this.rewardService.createReward(
-      { ...dto, eventId }, // eventId를 DTO에 추가
+      { ...dto, eventId },
       userId,
     );
     return this.toResponseDto(model);
@@ -32,11 +37,10 @@ export class RewardController {
     return models.map(this.toResponseDto);
   }
 
-  // 보상 단건 조회: GET /events/:eventId/rewards/:id
-  @Get(':id')
+  @Get(':rewardId')
   async findOne(
     @Param('eventId') eventId: string,
-    @Param('id') id: string,
+    @Param('rewardId') id: string,
   ): Promise<RewardResponseDto> {
     const model = await this.rewardService.getRewardByIdInEvent(eventId, id);
     return this.toResponseDto(model);
@@ -44,5 +48,15 @@ export class RewardController {
 
   private toResponseDto(model: RewardModel): RewardResponseDto {
     return { ...model };
+  }
+
+  @Post(':rewardId/claim')
+  async claim(
+    @Param('eventId') eventId: string,
+    @Param('rewardId') rewardId: string,
+    @Req() req: Request,
+  ): Promise<ClaimRewardResponseDto> {
+    const userId = req.headers['x-user-id'] as string;
+    return this.rewardClaimService.claimReward(eventId, rewardId, userId);
   }
 }

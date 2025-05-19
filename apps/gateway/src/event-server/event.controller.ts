@@ -106,4 +106,25 @@ export class EventController {
     );
     return response.data;
   }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post(':eventId/rewards/:rewardId/claim')
+  @Roles(UserRole.USER, UserRole.ADMIN, UserRole.OPERATOR)
+  async claimReward(
+    @Param('eventId') eventId: string,
+    @Param('rewardId') rewardId: string,
+    @Req() req: { user: { userId: string } },
+    @Body() dto: any,
+  ): Promise<any> {
+    const userId = req.user.userId;
+    // Event 서버로 x-user-id 헤더와 함께 POST
+    const response = await firstValueFrom(
+      this.httpService.post(
+        `${this.eventUrl}/events/${eventId}/rewards/${rewardId}/claim`,
+        dto,
+        { headers: { 'x-user-id': userId } },
+      ),
+    );
+    return response.data;
+  }
 }

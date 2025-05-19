@@ -3,7 +3,6 @@ import {
   Patch,
   Param,
   Body,
-  UseGuards,
   Post,
   Delete,
   Get,

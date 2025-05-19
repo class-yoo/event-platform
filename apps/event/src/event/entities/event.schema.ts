@@ -27,7 +27,7 @@ export class Event extends Document {
   active: boolean;
 
   @Prop({ required: true })
-  createdBy: string; // user_id, 반드시 JWT에서 추출하여 세팅
+  createdBy: string; // user_id, JWT에서 추출하여 세팅
 }
 
 export type EventDocument = Event &
