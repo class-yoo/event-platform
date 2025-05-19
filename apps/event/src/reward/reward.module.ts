@@ -5,7 +5,7 @@ import { RewardMongoRepository } from './repository/reward-mongo.repository';
 import { RewardService } from './reward.service';
 import { RewardController } from './reward.controller';
 import { RewardClaimMongoRepository } from './repository/reward-claim-mongo.repository';
-// import { RewardClaimService } from './reward-claim.service';
+import { RewardClaimService } from './reward-claim.service';
 import { RewardClaim, RewardClaimSchema } from './entities/reward-claim.schema';
 import { PointService } from './point.service';
 import { PointMongoRepository } from './repository/point-mongo.repository';
@@ -20,6 +20,7 @@ import {
 import { EventSchema } from '../event/entities/event.schema';
 import { UserAttendanceController } from './attendance/user-attendance.controller';
 import { UserAttendanceService } from './attendance/user-attendance.service';
+import { RewardClaimController } from './reward-claim.controller';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { UserAttendanceService } from './attendance/user-attendance.service';
   ],
   providers: [
     RewardService,
-    // RewardClaimService,
+    RewardClaimService,
     PointService,
     { provide: 'RewardRepository', useClass: RewardMongoRepository },
     { provide: 'RewardClaimRepository', useClass: RewardClaimMongoRepository },
@@ -49,6 +50,10 @@ import { UserAttendanceService } from './attendance/user-attendance.service';
     },
     UserAttendanceService, // temp
   ],
-  controllers: [RewardController, UserAttendanceController],
+  controllers: [
+    RewardController,
+    UserAttendanceController,
+    RewardClaimController,
+  ],
 })
 export class RewardModule {}

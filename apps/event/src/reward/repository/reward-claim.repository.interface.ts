@@ -22,4 +22,8 @@ export interface RewardClaimRepository {
   ): Promise<RewardClaimModel | null>;
 
   findAllByUserId(userId: string): Promise<RewardClaimModel[]>;
+
+  findAll(): Promise<RewardClaimModel[]>;
+
+  findAllByEventId(eventId: string): Promise<RewardClaimModel[]>;
 }

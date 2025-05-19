@@ -4,14 +4,14 @@ import { RewardService } from './reward.service';
 import { CreateRewardDto } from './dto/create-reward.dto';
 import { RewardResponseDto } from './dto/reward-response.dto';
 import { RewardModel } from './models/reward.model';
-// import { RewardClaimResponseDto } from './dto/reward-claim-response.dto';
-// import { RewardClaimService } from './reward-claim.service';
+import { RewardClaimResponseDto } from './dto/reward-claim-response.dto';
+import { RewardClaimService } from './reward-claim.service';
 
 @Controller('events/:eventId/rewards')
 export class RewardController {
   constructor(
     private readonly rewardService: RewardService,
-    // private readonly rewardClaimService: RewardClaimService,
+    private readonly rewardClaimService: RewardClaimService,
   ) {}
 
   // 보상 등록: POST /events/:eventId/rewards
@@ -48,5 +48,15 @@ export class RewardController {
 
   private toResponseDto(model: RewardModel): RewardResponseDto {
     return { ...model };
+  }
+
+  @Post(':rewardId/claim')
+  async claim(
+    @Param('eventId') eventId: string,
+    @Param('rewardId') rewardId: string,
+    @Req() req: Request,
+  ): Promise<RewardClaimResponseDto> {
+    const userId = req.headers['x-user-id'] as string;
+    return this.rewardClaimService.claimReward(eventId, rewardId, userId);
   }
 }

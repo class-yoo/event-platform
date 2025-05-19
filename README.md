@@ -6,6 +6,7 @@
 - 프로젝트 구성은 개발속도 향상을 위해 Monorepo로 되어있습니다.
 - 모든 엔드포인트는 jwt token 기반으로 동작합니다. jwt 토큰에는 `user.id`, `role` 정보가 들어있습니다.
   - 로그인은 email로 진행하지만, 보안을 위해 통신간 user_id를 활용합니다.
+  - JWT를 통해 `인증`이 되고 Role을 기반으로 엔드포인트별 `인가`가 됩니다.
   - 만약 user_id도 보안상 위험하다 판단되면 user_id를 한번 더 암호화하는 방식으로 구성이 필요합니다.
   - 더 자세한 정보는 Auth Server의 `README.md` 파일을 참고해주세요.
 - 각 리스트 조회 API의 경우, 페이징 기능은 우선 제외했습니다. (당연히 서비스하면서 추가해야함)
@@ -24,8 +25,8 @@
 서버의 설명은 각 서버의 README.md 파일을 참고하세요.
 
 - Gateway Server: [README.md](apps/gateway/README.md)
-- Auth Server: [README.md](apps/auth/README.md)
 - Event Server: [README.md](apps/event/README.md)
+- Auth Server: [README.md](apps/auth/README.md)
 
 ## 테스트
 MSA 환경으로 구성하려면 실제 DB도 따로 구성해야하지만, 구현 시간 절약을 위해 하나의 DB로 구성하였습니다.
@@ -49,26 +50,28 @@ e392aa966dd8   mongo:6                  "docker-entrypoint.s…"   3 days ago   
 ---
 
 ### seed data settings
-해당 프로젝트의 이벤트는 연속 출석일 수 이벤트를 채택하여 사용하고 있습니다. 로그인마다 출석일 수를 채우는게 기본이지만, 상황상 출석일 수 데이터를 스크립트를 통해 채우고 있습니다.
- `jq`
+해당 프로젝트의 이벤트는 연속 출석일 수 이벤트를 채택하여 사용하고 있습니다.
+로그인마다 출석일 수를 채우는게 기본이지만, 상황상 출석일 수 데이터를 스크립트를 통해 채우고 있습니다.
+그렇기에 `jq` 툴이 반드시 필요합니다.
+ 
 - nestjs 환경의 seed 데이터 세팅 기능을 구현하려 했지만, 시간이 부족하여 우선은 데이터 세팅을 위한 특수 API를 만들어서 데이터를 세팅하도록 합니다.
 - 해당 스크립트가 실행되면, 아래의 계정들이 생성됩니다.
   - `admin@maple.com` - `ADMIN`
   - `operator@maple.com` - `OPERATOR`
   - `user@maple.com` - `USER`
   - `auditor@maple.com` - `AUDITOR`
-- 만약 jq 툴이 설치 되지 않으셔서 스크립트가 실패하면, 아래 회원가입(유저등록) 기능을 사용해주세요.
 ```
 # ./libs/scripts/seed.sh
 ```
 ---
 
 ### 회원가입(유저등록)
+seed data settings 단계에서 기본으로 등록되는 유저가 있기 때문에 넘어가셔도 됩니다.
 ```shell
 curl -X POST http://localhost:3001/auth/signup \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "user@maple.com",
+    "email": "user1@maple.com",
     "password": "pass123",
     "role": "USER"
   }'
@@ -76,6 +79,7 @@ curl -X POST http://localhost:3001/auth/signup \
 ---
 
 ### 로그인
+로그인을 해서 얻은 token에 대해서는 
 ```shell
 # 어드민 유저 로그인
 curl -X POST http://localhost:3001/auth/login \
@@ -161,7 +165,7 @@ curl -X GET http://localhost:3001/events/<eventId>/rewards/<rewardId> \
 
 ### 보상 요청
 - 보상요청에 대한 포인트 지급은 실제 `seed data settings`에서 세팅한 경우에만 지급이 되도록 하고 있습니다.
-  - email: `user@maple.com`
+  - email: `user@maple.com`로 로그인하여 얻은 JWT 토큰을 세팅하셔야합니다.
 ```shell
 curl -X POST http://localhost:3001/events/<eventId>/rewards/<rewardId>/claim \
   -H "Authorization: Bearer <JWT_TOKEN>" \
@@ -172,5 +176,13 @@ curl -X POST http://localhost:3001/events/<eventId>/rewards/<rewardId>/claim \
 
 ### 보상 요청 내역 확인
 ```shell
-
+# 전체 조회
+curl -X GET http://localhost:3001/reward-claims \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json"
+  
+# 특정 이벤트의 보상 요청 이력 조회
+curl -X GET "http://localhost:3001/reward-claims?eventId=<eventId>" \
+  -H "Authorization: Bearer <JWT_TOKEN>" \
+  -H "Content-Type: application/json"
 ```

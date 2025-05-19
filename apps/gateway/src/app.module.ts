@@ -7,6 +7,7 @@ import { AuthController } from './auth-server/auth.controller';
 import { ConfigModule } from '@nestjs/config';
 import { EventController } from './event-server/event.controller';
 import { HttpModule } from '@nestjs/axios';
+import { RewardClaimsController } from './event-server/reward-claims.controller';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { HttpModule } from '@nestjs/axios';
     }),
     HttpModule,
   ],
-  controllers: [AuthController, EventController],
+  controllers: [AuthController, EventController, RewardClaimsController],
   providers: [
     JwtStrategy,
     {

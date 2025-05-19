@@ -66,4 +66,21 @@ export class RewardClaimMongoRepository implements RewardClaimRepository {
       .exec();
     return docs.map((doc) => this.toModel(doc));
   }
+
+  async findAll(): Promise<RewardClaimModel[]> {
+    const docs = await this.rewardClaimModel
+      .find()
+      .sort({ claimedAt: -1 })
+      .exec();
+    return docs.map((doc) => this.toModel(doc));
+  }
+
+  async findAllByEventId(eventId: string): Promise<RewardClaimModel[]> {
+    const docs = await this.rewardClaimModel
+      .find({ eventId: new Types.ObjectId(eventId) })
+      .sort({ claimedAt: -1 })
+      .exec();
+
+    return docs.map((doc) => this.toModel(doc));
+  }
 }
