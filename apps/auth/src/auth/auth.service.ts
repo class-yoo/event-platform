@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { LoginResponseDto } from './dto/login.dto';
 import { UserModel } from '../user/models/user.model';
-import { SignupResponseDto } from './dto/signup.dto';
+import { SignupRequestDto, SignupResponseDto } from './dto/signup.dto';
 
 @Injectable()
 export class AuthService {
@@ -13,15 +13,16 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signup(email: string, password: string): Promise<SignupResponseDto> {
-    const existing: UserModel | null =
-      await this.userService.findByEmail(email);
+  async signup(dto: SignupRequestDto): Promise<SignupResponseDto> {
+    const existing: UserModel | null = await this.userService.findByEmail(
+      dto.email,
+    );
     if (existing) {
       throw new ConflictException('이미 가입된 이메일입니다.');
     }
 
-    const pwHash: string = await bcrypt.hash(password, 10);
-    await this.userService.create(email, pwHash);
+    const pwHash: string = await bcrypt.hash(dto.password, 10);
+    await this.userService.create(dto.email, pwHash, dto.role);
 
     return { success: true };
   }

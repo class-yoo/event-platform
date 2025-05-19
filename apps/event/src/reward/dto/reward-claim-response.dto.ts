@@ -1,6 +1,6 @@
 import { RewardClaimStatus } from '@shared/enums/reward-claim.enum';
 
-export class ClaimRewardResponseDto {
+export class RewardClaimResponseDto {
   id: string;
   success: boolean; // 성공 여부
   status: RewardClaimStatus; // 지급 상태

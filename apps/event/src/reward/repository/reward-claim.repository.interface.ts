@@ -20,4 +20,6 @@ export interface RewardClaimRepository {
     rewardId: string,
     userId: string,
   ): Promise<RewardClaimModel | null>;
+
+  findAllByUserId(userId: string): Promise<RewardClaimModel[]>;
 }

@@ -15,6 +15,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     // 로그인과 회원가입은 인증 없이 허용
     if (
+      (method === 'POST' && url === '/auth/signup') ||
       (method === 'POST' && url === '/auth/login') ||
       (method === 'POST' && url === '/users')
     ) {

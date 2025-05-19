@@ -5,7 +5,7 @@ import { RewardMongoRepository } from './repository/reward-mongo.repository';
 import { RewardService } from './reward.service';
 import { RewardController } from './reward.controller';
 import { RewardClaimMongoRepository } from './repository/reward-claim-mongo.repository';
-import { RewardClaimService } from './reward-claim.service';
+// import { RewardClaimService } from './reward-claim.service';
 import { RewardClaim, RewardClaimSchema } from './entities/reward-claim.schema';
 import { PointService } from './point.service';
 import { PointMongoRepository } from './repository/point-mongo.repository';
@@ -33,7 +33,7 @@ import { UserAttendanceService } from './attendance/user-attendance.service';
   ],
   providers: [
     RewardService,
-    RewardClaimService,
+    // RewardClaimService,
     PointService,
     { provide: 'RewardRepository', useClass: RewardMongoRepository },
     { provide: 'RewardClaimRepository', useClass: RewardClaimMongoRepository },

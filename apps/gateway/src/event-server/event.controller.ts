@@ -127,4 +127,19 @@ export class EventController {
     );
     return response.data;
   }
+
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('claims')
+  @Roles(UserRole.USER)
+  async getUserRewardClaims(
+    @Req() req: { user: { userId: string } },
+  ): Promise<any> {
+    const url = `${this.eventUrl}/reward-claims`;
+    const response = await firstValueFrom(
+      this.httpService.get(url, {
+        headers: { user_id: req.user.userId },
+      }),
+    );
+    return response.data;
+  }
 }

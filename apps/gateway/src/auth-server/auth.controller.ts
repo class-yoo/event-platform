@@ -26,6 +26,14 @@ export class AuthController {
     this.authUrl = configService.get<string>('AUTH_SERVICE_URL')!;
   }
 
+  @Post('signup')
+  async signup(@Body() body: any): Promise<any> {
+    const response = await firstValueFrom(
+      this.http.post(`${this.authUrl}/auth/signup`, body),
+    );
+    return response.data;
+  }
+
   @Post('login')
   async login(@Body() body: any): Promise<any> {
     const response = await firstValueFrom(

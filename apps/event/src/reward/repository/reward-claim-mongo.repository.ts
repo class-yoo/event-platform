@@ -58,4 +58,12 @@ export class RewardClaimMongoRepository implements RewardClaimRepository {
       .exec();
     return doc ? this.toModel(doc) : null;
   }
+
+  async findAllByUserId(userId: string): Promise<RewardClaimModel[]> {
+    const docs = await this.rewardClaimModel
+      .find({ userId })
+      .sort({ claimedAt: -1 })
+      .exec();
+    return docs.map((doc) => this.toModel(doc));
+  }
 }

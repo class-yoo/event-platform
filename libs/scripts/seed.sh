@@ -22,7 +22,7 @@ for i in "${!EMAILS[@]}"; do
     -H "Content-Type: application/json" \
     -d '{
       "email": "'"$email"'",
-      "password": "password123",
+      "password": "pass123",
       "role": "'"$role"'"
     }'
 
@@ -33,7 +33,7 @@ echo "🔐 Logging in as user@maple.com..."
 
 JWT=$(curl -s -X POST "$LOGIN_URL" \
   -H "Content-Type: application/json" \
-  -d '{"email":"user@maple.com","password":"password123"}' \
+  -d '{"email":"user@maple.com","password":"pass123"}' \
   | jq -r '.token')
 
 if [ -z "$JWT" ]; then

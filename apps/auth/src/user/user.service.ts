@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { UserDocument } from './entities/user.entity';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserRole } from '@shared/enums/user-role.enum';
 
 @Injectable()
 export class UserService {
@@ -29,10 +30,11 @@ export class UserService {
     });
   }
 
-  async create(email: string, password: string): Promise<void> {
+  async create(email: string, password: string, role: UserRole): Promise<void> {
     await this.userRepository.create({
       email,
       password,
+      role,
     });
   }
 
