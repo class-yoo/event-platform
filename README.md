@@ -79,7 +79,7 @@ curl -X POST http://localhost:3001/auth/signup \
 ---
 
 ### 로그인
-로그인을 해서 얻은 token에 대해서는 
+로그인을 해서 얻은 token은 모든 API활용에 필요합니다. 얻은 토큰을 어딘가에 기록해두시고 사용하세요.
 ```shell
 # 어드민 유저 로그인
 curl -X POST http://localhost:3001/auth/login \
